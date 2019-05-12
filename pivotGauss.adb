@@ -1,5 +1,5 @@
 with P_Esiut; use P_Esiut;
-with P_Str; use P_Str;
+with P_Matrice; use P_Matrice;
 
 procedure PivotGauss is
    N, P : Positive;
