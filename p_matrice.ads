@@ -9,13 +9,10 @@ package P_Matrice is
    -- Infos --
    function Trisup(Mat : in TV_Str) return Boolean;
    function Diago(Mat : in TV_Str) return Boolean;
-   function Homo(Mat : in TV_Str) return Boolean;
-   function Sum(Mat : in TV_Str; L : in positive) return Float;
+   function LVide(Mat : in TV_Str; L : in positive) return Boolean;
    function Max(Mat : in TV_Str) return Integer;
    
    -- Traitement lignes/colonnes --
-   function Nbl(Mat : in TV_Str) return Positive;
-   function Nbc(Mat : in TV_Str) return Positive;
    procedure Switch_L(Mat : out TV_Str; L1, L2 : in Positive);
    procedure Switch_C(Mat : out TV_Str; C1, C2 : in Positive; Ord : out TV_Ord);
    

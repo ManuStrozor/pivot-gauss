@@ -1,13 +1,11 @@
+with P_Math; use P_Math;
+
 package body P_Matrice is
    
    function Trisup(Mat : in TV_Str) return Boolean is
       J, Q : Positive;
    begin
-      if Nbl(Mat) > Nbc(Mat) then
-	 Q := Nbc(Mat);
-      else
-	 Q := Nbl(Mat);
-      end if;
+      Q := Min(Mat'Length(1), Mat'Length(2));
       for I in Mat'Range(1) loop
 	 J := 1;
 	 while J < I and J < Q loop
@@ -23,34 +21,25 @@ package body P_Matrice is
    function Diago(Mat : in TV_Str) return Boolean is
       Q : Positive;
    begin
-      if Nbl(Mat) >= Nbc(Mat) then
-	 Q := Nbc(Mat)-1;
+      if Mat'Length(1) >= Mat'Length(2) then
+	 Q := Mat'Length(2)-1;
       else
-	 Q := Nbl(Mat);
+	 Q := Mat'Length(1);
       end if;
       for I in 1..Q loop
-	 if Floaty(Mat(I, I)) = 0.0 and Sum(Mat, I) /= 0.0 then
+	 if Floaty(Mat(I, I)) = 0.0 and not LVide(Mat, I) then
 	    return False;
 	 end if;	    
       end loop;
       return True;
    end;
    
-   function Homo(Mat : in TV_Str) return Boolean is
-   begin
-      for I in Mat'Range(1) loop
-	 if Floaty(Mat(I, Nbc(Mat))) /= 0.0 then return False; end if;
-      end loop;
-      return True;
-   end;
-   
-   function Sum(Mat : in TV_Str; L : in positive) return Float is
-      Sum : Float := 0.0;
+   function LVide(Mat : in TV_Str; L : in positive) return Boolean is
    begin
       for I in 1..Mat'last(2)-1 loop
-	 Sum := Sum + Floaty(Mat(L, I));
+	 if Floaty(Mat(L, I)) /= 0.0 then return False; end if;
       end loop;
-      return Sum;
+      return True;
    end;
    
    function Max(Mat : in TV_Str) return Integer is
@@ -64,16 +53,6 @@ package body P_Matrice is
 	 end loop;
       end loop;
       return Max;
-   end;
-   
-   function Nbl(Mat : in TV_Str) return Positive is
-   begin
-      return Mat'Length(1);
-   end;
-   
-   function Nbc(Mat : in TV_Str) return Positive is
-   begin
-      return Mat'Length(2);
    end;
    
    procedure Switch_L(Mat : out TV_Str; L1, L2 : in Positive) is
@@ -158,7 +137,7 @@ package body P_Matrice is
    procedure Calcul(Mat : out TV_Str; Ord : out TV_Ord) is
    begin
       AfficheTout(Mat, Ord);
-      for I in 1..Nbc(Mat)-1 loop
+      for I in 1..Mat'Length(2)-1 loop
 	 if Floaty(Mat(I, I)) = 0.0 then
 	    GetCand(Mat, I, Ord);
 	    DoPivot(Mat, I);
@@ -203,15 +182,15 @@ package body P_Matrice is
    begin
       if Floaty(Coef) > 0.0 then
 	 if Floaty(Coef) = 1.0 then
-	    Ecrire_Ligne("L" & Trim(Image(I)) & " <- L" & Trim(Image(I)) & " - L" & Trim(Image(Piv)));
+	    Ecrire_Ligne("* L" & Trim(Image(I)) & " <- L" & Trim(Image(I)) & " - L" & Trim(Image(Piv)));
 	 else
-	    Ecrire_Ligne("L" & Trim(Image(I)) & " <- L" & Trim(Image(I)) & " - " & Trim(Coef) & " L" & Trim(Image(Piv)));
+	    Ecrire_Ligne("* L" & Trim(Image(I)) & " <- L" & Trim(Image(I)) & " - " & Trim(Coef) & " L" & Trim(Image(Piv)));
 	 end if;
       else
 	 if Floaty(Coeff) = 1.0 then
-	    Ecrire_Ligne("L" & Trim(Image(I)) & " <- L" & Trim(Image(I)) & " + L" & Trim(Image(Piv)));
+	    Ecrire_Ligne("* L" & Trim(Image(I)) & " <- L" & Trim(Image(I)) & " + L" & Trim(Image(Piv)));
 	 else
-	    Ecrire_Ligne("L" & Trim(Image(I)) & " <- L" & Trim(Image(I)) & " + " & Trim(Coeff) & " L" & Trim(Image(Piv)));
+	    Ecrire_Ligne("* L" & Trim(Image(I)) & " <- L" & Trim(Image(I)) & " + " & Trim(Coeff) & " L" & Trim(Image(Piv)));
 	 end if;
       end if;
    end;
@@ -219,7 +198,6 @@ package body P_Matrice is
    procedure AfficheTout(Mat : in TV_Str; Ord : in TV_Ord) is
    begin
       A_La_Ligne;
-      Affiche(Ord);
       Affiche(Mat);
    end;
    
@@ -229,11 +207,20 @@ package body P_Matrice is
       MaxS := Max(Mat);
       for I in Mat'Range(1) loop
 	 for J in Mat'Range(2) loop
+	    
 	    Diff := MaxS - Strlen(Trim(Mat(I, J)));
 	    for S in 1..Diff loop
-	       Ecrire(' ');
+	       if J /= 1 and J /= Mat'Last(2) then
+		  Ecrire(' ');
+	       end if;
 	    end loop;
+	    
+	    if (J = 1 or J = Mat'Last(2)) and Strlen(Trim(Mat(I, J))) = 1 then
+	       Ecrire(' ');
+	    end if;
+	    
 	    Ecrire(Trim(Mat(I, J)));
+	    
 	    if J /= Mat'Last(2) then
 	       if J = Mat'Last(2)-1 then
 		  Ecrire(" |");
@@ -241,6 +228,7 @@ package body P_Matrice is
 		  Ecrire(' ');
 	       end if;
 	    end if;
+	    
 	 end loop;
 	 if I /= Mat'Last(1) then A_La_Ligne; end if;
       end loop;
@@ -249,7 +237,7 @@ package body P_Matrice is
    
    procedure Affiche(Ord : in TV_Ord) is
    begin
-      Ecrire("Ordre : ");
+      Ecrire("Changement d'ordre: ");
       for I in Ord'Range loop
 	 Ecrire(Ord(I));
 	 if I /= Ord'Last then Ecrire(' '); end if;

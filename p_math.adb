@@ -1,5 +1,14 @@
 package body P_Math is
    
+   function Min(A, B : in Integer) return Integer is
+   begin
+      if A < B then
+	 return A;
+      else
+	 return B;
+      end if;
+   end;
+   
    function Isint(F : in Float) return Boolean is
    begin
       return F = Float(Integer(F));
