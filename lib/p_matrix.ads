@@ -1,7 +1,7 @@
 with P_Esiut; use P_Esiut;
 with P_String; use P_String;
 
-package P_Matrice is
+package P_Matrix is
    
    type TV_Str is array(Integer range <>, Integer range <>) of T_Str;
    type TV_Ord is array(Integer range <>) of Character;
@@ -20,8 +20,12 @@ package P_Matrice is
    procedure CalcStr(Cible : out T_Str; Pivot, Coef : in String);
    procedure GetCand(Mat : out TV_Str; Piv : in Positive; Ord : out TV_Ord);
    procedure DoPivot(Mat : out TV_Str; Piv : in positive);
+   procedure Calcul(Mat : out TV_Str; Ord : out TV_Ord);
    
    -- Affichages --
+   procedure Dimension(N, P : out Positive);
+   procedure Lire(Mat : out TV_Str);   
+   procedure Lire(Ord : out TV_Ord);
    procedure AfficheEtapes(Coef : in String; I, Piv : in positive);
    procedure AfficheTout(Mat : in TV_Str; Ord : in TV_Ord);
    procedure Affiche(Mat : in TV_Str);
