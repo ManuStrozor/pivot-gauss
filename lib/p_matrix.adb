@@ -1,5 +1,3 @@
-with P_Math; use P_Math;
-
 package body P_Matrix is
    
    function Trisup(Mat : in TV_Str) return Boolean is
@@ -45,7 +43,7 @@ package body P_Matrix is
    function Max(Mat : in TV_Str) return Integer is
       Max, N : Integer;
    begin
-      Max := Strlen(Trim(Mat(1, 1)));
+      Max := 2;
       for I in Mat'Range(1) loop
 	 for J in Mat'Range(2) loop
 	    N := Strlen(Trim(Mat(I, J)));

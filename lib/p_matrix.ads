@@ -1,5 +1,6 @@
 with P_Esiut; use P_Esiut;
 with P_String; use P_String;
+with P_Math; use P_Math;
 
 package P_Matrix is
    
