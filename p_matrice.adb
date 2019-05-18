@@ -107,7 +107,7 @@ package body P_Matrice is
 	    Switch_C(Mat, Piv, I, Ord);
 	    Switched := True;
 	    A_La_Ligne;
-	    Affiche(Ord);
+	    Ecrire("* "); Affiche(Ord);
 	 end if;
 	 I := I + 1;
       end loop;
@@ -134,49 +134,6 @@ package body P_Matrice is
       end if;
    end;
    
-   procedure Calcul(Mat : out TV_Str; Ord : out TV_Ord) is
-   begin
-      AfficheTout(Mat, Ord);
-      for I in 1..Mat'Length(2)-1 loop
-	 if Floaty(Mat(I, I)) = 0.0 then
-	    GetCand(Mat, I, Ord);
-	    DoPivot(Mat, I);
-	 else
-	    DoPivot(Mat, I);
-	 end if;
-	 if Trisup(Mat) and Diago(Mat) then exit; end if;
-      end loop;
-      AfficheTout(Mat, Ord);
-   end;
-   
-   procedure Dimension(N, P : out Positive) is
-   begin
-      loop
-	 Ecrire("Nombre de lignes : "); Lire(N);
-	 exit when N > 0;
-      end loop;
-      loop
-	 Ecrire("Nombre de colonnes : "); Lire(P);
-	 exit when P > 0;
-      end loop;
-   end;
-   
-   procedure Lire(Mat : out TV_Str) is
-   begin
-      for I in Mat'Range(1) loop
-	 for J in Mat'Range(2) loop
-	    Ecrire("Coef" & Image(I) & Image(J) & " : "); Lire(Mat(I, J));
-	 end loop;
-      end loop;
-   end;
-   
-   procedure Lire(Ord : out TV_Ord) is
-   begin
-      for I in Ord'Range loop
-	 Ecrire("Var" & Image(I) & " : "); Lire(Ord(I));
-      end loop;
-   end;
-   
    procedure AfficheEtapes(Coef : in String; I, Piv : in positive) is
       Coeff : String := Oppose(Coef);
    begin
@@ -198,6 +155,7 @@ package body P_Matrice is
    procedure AfficheTout(Mat : in TV_Str; Ord : in TV_Ord) is
    begin
       A_La_Ligne;
+      Affiche(Ord);
       Affiche(Mat);
    end;
    
@@ -237,7 +195,7 @@ package body P_Matrice is
    
    procedure Affiche(Ord : in TV_Ord) is
    begin
-      Ecrire("Changement d'ordre: ");
+      Ecrire("Ordre: ");
       for I in Ord'Range loop
 	 Ecrire(Ord(I));
 	 if I /= Ord'Last then Ecrire(' '); end if;

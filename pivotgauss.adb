@@ -1,4 +1,5 @@
 with P_Esiut; use P_Esiut;
+with P_Pivot; use P_Pivot;
 with P_Matrice; use P_Matrice;
 
 procedure Pivotgauss is
@@ -13,6 +14,8 @@ begin
       Lire(M);
       A_La_Ligne;
       Lire(O);
+      AfficheTout(M, O);
       Calcul(M, O);
+      AfficheTout(M, O);
    end;
 end;

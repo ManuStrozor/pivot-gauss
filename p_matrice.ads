@@ -20,12 +20,6 @@ package P_Matrice is
    procedure CalcStr(Cible : out T_Str; Pivot, Coef : in String);
    procedure GetCand(Mat : out TV_Str; Piv : in Positive; Ord : out TV_Ord);
    procedure DoPivot(Mat : out TV_Str; Piv : in positive);
-   procedure Calcul(Mat : out TV_Str; Ord : out TV_Ord);
-   
-   -- Initialisations --
-   procedure Dimension(N, P : out Positive);
-   procedure Lire(Mat : out TV_Str);
-   procedure Lire(Ord : out TV_Ord);
    
    -- Affichages --
    procedure AfficheEtapes(Coef : in String; I, Piv : in positive);
